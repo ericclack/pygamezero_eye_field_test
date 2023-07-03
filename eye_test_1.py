@@ -2,9 +2,9 @@ WIDTH = 1000
 HEIGHT = 800
 TITLE = "Eye field test"
 
-FIELD = [ [0]*30 for i in range(20) ]
+DOT_RADIUS = 10
+FIELD = [ [0]*(450//DOT_RADIUS) for i in range(300//DOT_RADIUS) ]
 
-DOT_RADIUS = 15
 V_TO_RGV = {
     0: (0,0,0),
     1: (100,100,100),
@@ -13,7 +13,7 @@ V_TO_RGV = {
 
 CURRENT_X = 0
 CURRENT_Y = 0
-TARGET = (5, 5) # In dot position (so * RADIUS)
+TARGET = (5, 5) # (x,y) as a dot position (so * RADIUS)
 
 def draw():
     draw_field()
@@ -35,12 +35,18 @@ def draw_field():
         for x, v in enumerate(row):
             draw_dot(x,y,v)
 
+def save_results():
+    print("Target position", TARGET)
+    print(FIELD)
+
 def on_key_up(key):
     global CURRENT_Y, CURRENT_X
     if key == keys.SPACE:
         FIELD[CURRENT_Y][CURRENT_X] = 2
-    if key == keys.Q:
-        print(FIELD)
+    if key == keys.A:
+        FIELD[CURRENT_Y][CURRENT_X] = 1
+    elif key == keys.Q:
+        save_results()
 
     CURRENT_X += 1
     if CURRENT_X >= len(FIELD[0]):
@@ -48,4 +54,4 @@ def on_key_up(key):
         CURRENT_X = 0
     if CURRENT_Y >= len(FIELD):
         print("All done")
-        print(FIELD)
+        save_results()
